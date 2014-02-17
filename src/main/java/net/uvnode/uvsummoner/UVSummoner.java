@@ -61,6 +61,7 @@ public final class UVSummoner extends JavaPlugin implements Listener {
     
     @EventHandler
     private void onEntityDeathEvent(EntityDeathEvent event) {
+        long eventTime = System.currentTimeMillis();
         if (event.getEntity().getKiller() != null
             && getConfig().getStringList("worlds").contains(event.getEntity().getLocation().getWorld().getName())
             && event.getEntity().getLocation().getBlockY() >= getConfig().getInt("minY")) {
@@ -82,14 +83,15 @@ public final class UVSummoner extends JavaPlugin implements Listener {
                 case MAGMA_CUBE:
                 case ENDER_DRAGON:
                 case WITCH:
-                    event.getEntity().getKiller().sendMessage(String.format("%d kills so far", _totalKills));
+                    event.getEntity().getKiller().sendMessage(String.format("%d kills so far. Time between: %d.", _totalKills, (int) (eventTime - _lastKill) ));
                     this.getLogger().info("Kill detected.");
                     // If the last kill was too long ago, reset the streak.
-                    if(_lastKill < System.currentTimeMillis() - getConfig().getInt("killStreakTimer")*1000) {
+                    
+                    if(eventTime < _lastKill + getConfig().getInt("killStreakTimer")) {
                         _playerKills.clear();
                         _totalKills = 0;
                     }
-                    _lastKill = System.currentTimeMillis();
+                    _lastKill = eventTime;
                     // Record the kill
                     if (_playerKills.containsKey(event.getEntity().getKiller().getName())) {
                         _playerKills.put(event.getEntity().getKiller().getName(), _playerKills.get(event.getEntity().getKiller().getName()) + 1);
