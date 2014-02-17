@@ -1,0 +1,7 @@
+name: UVSummoner
+main: net.uvnode.uvsummoner.UVSummoner
+version: 1.3.5
+load: POSTWORLD
+author: jcornwellshiel
+website: uv-node.net
+softdepend: [pluginmetrics]
