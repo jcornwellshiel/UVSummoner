@@ -25,7 +25,6 @@ import org.bukkit.plugin.java.JavaPlugin;
  *
  */
 public final class UVSummoner extends JavaPlugin implements Listener {
-    List<Zone> _trackingZones;
     List<Wave> _waves;
     Random _randomizer;
     Map<String, Integer> _playerKills;
@@ -39,7 +38,6 @@ public final class UVSummoner extends JavaPlugin implements Listener {
         getServer().getPluginManager().registerEvents(this, this);
        
         _randomizer = new Random();
-        _trackingZones = new ArrayList<>();
         _waves = new ArrayList<>();
         _playerKills = new HashMap<>();
         _lastKill = 0;
@@ -182,13 +180,6 @@ public final class UVSummoner extends JavaPlugin implements Listener {
                 }
             }
         }
-    }
-
-    private void expireZone(Zone zone) {
-        // Eventually decide whether to send killStreakEndedAnnouncement
-        if (zone.getKillCount() > getConfig().getInt("minKillStreak"))
-            announceNearby(zone.getLocation(), getConfig().getString("killStreakEndedAnnouncement"));
-        _trackingZones.remove(zone);
     }
     
     private void announceNearby(Location location, String announcement) {
