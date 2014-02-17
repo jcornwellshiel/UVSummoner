@@ -17,11 +17,12 @@ public class Wave {
     private String _announcement;
     private int _maxMobs;
     private int _minMobs;
-    private int _killStreakThreshold;
+    private int _threatThreshold;
+
     private List<String> _mobs;
     Wave(String announcement, int killStreakThreshold, int minMobs, int maxMobs, List<String> mobList) {
         _announcement = announcement;
-        _killStreakThreshold = killStreakThreshold;
+        _threatThreshold = killStreakThreshold;
         _minMobs = minMobs;
         _maxMobs = maxMobs;
         _mobs = mobList;
@@ -40,11 +41,17 @@ public class Wave {
     }
 
     public int getKillStreakThreshold() {
-        return _killStreakThreshold;
+        return _threatThreshold;
     }
 
     public List<String> getMobs() {
         return _mobs;
+    }
+    public int getNumPossibleMobs() {
+        if (_mobs != null)
+            return _mobs.size();
+        else
+            return 0;
     }
     
 }

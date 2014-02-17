@@ -1,52 +1,53 @@
 riftChance: 0.00
-riftChanceIncrease: 0.1
-minimumKillsStreak: 1
-killStreakTimer: 15
+riftChanceIncrease: 0.005
+minimumKillsStreak: 20
+killStreakTimer: 8000
 minY: 50
 worlds:
   - world
 
 killStreakStartedAnnouncement: You can feel the oppressive anger of Herobrine building...
 killStreakEndedAnnouncement: Herobrine's presence fades.
+playerDeathAnnouncement: Herobrine chuckles, his rage subsides slightly after witnessing PLAYER's demise.
 
 waves:
   1:
-    killStreakThreshold: 3
+    killStreakThreshold: 20
     announcement: A rift has opened! You hear maniacal laughter from the other side..
     possibleMobs:
       - Zombie
       - Skeleton
       - Spider
       - CaveSpider
-    minMobs: 10
+    minMobs: 5
     maxMobs: 20
   2:
-    killStreakThreshold: 4
+    killStreakThreshold: 30
     announcement: Tssssss...
     possibleMobs:
       - Creeper
-    minMobs: 10
+    minMobs: 5
     maxMobs: 20
   3:
-    killStreakThreshold: 5
+    killStreakThreshold: 40
     announcement: Herobrine summons hideous monsters from the depths!
     possibleMobs:
       - WitherSkeleton
+      - PigZombie
       - Blaze
-    minMobs: 10
+    minMobs: 5
     maxMobs: 20
   4:
-    killStreakThreshold: 6
+    killStreakThreshold: 50
     announcement: The sound of crones cackling approaches...
     possibleMobs:
       - Witch
     minMobs: 2
     maxMobs: 12
   5:
-    killStreakThreshold: 7
+    killStreakThreshold: 100
     announcement: DOOM IS UPON YOU!
     possibleMobs:
       - Wither
-      - EnderDragon
     minMobs: 1
     maxMobs: 1
