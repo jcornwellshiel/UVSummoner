@@ -65,7 +65,7 @@ public final class UVSummoner extends JavaPlugin implements Listener {
     @EventHandler
     private void onPlayerDeathEvent(PlayerDeathEvent event) {
         if (getConfig().getStringList("worlds").contains(event.getEntity().getLocation().getWorld().getName())
-            && _playerKills.containsKey(event.getEntity().getKiller().getName())) {
+            && _playerKills.containsKey(event.getEntity().getName())) {
             _threatLevel -= _playerKills.get(event.getEntity().getKiller().getName());
             if (_threatLevel < 0) _threatLevel = 0;
         }
@@ -95,15 +95,15 @@ public final class UVSummoner extends JavaPlugin implements Listener {
                 case MAGMA_CUBE:
                 case ENDER_DRAGON:
                 case WITCH:
-                    //event.getEntity().getKiller().sendMessage(String.format("%d kill streak. %d threat. Time between: %d.", _totalKills, _threatLevel, (int) (eventTime - _lastKill)));
-                    this.getLogger().info("Kill detected.");
+                    this.getLogger().info(String.format("%d kill streak. %d threat. Time between: %d.", _totalKills, _threatLevel, (int) (eventTime - _lastKill)));
+
 
                     // If the last kill was too long ago, reset the streak.
                     if (eventTime - _lastKill > getConfig().getInt("killStreakTimer")) {
                         _playerKills.clear();
                         _totalKills = 0;
                         _threatLevel -= 2 * (eventTime - _lastKill) / getConfig().getInt("killStreakTimer");
-                        this.getLogger().info(String.format("Streak reset. %d had passed, which is more than %d", eventTime - _lastKill, getConfig().getInt("killStreakTimer")));
+                        this.getLogger().info(String.format("Streak reset. %d had passed, which is more than %d. Threat reduced to %d.", eventTime - _lastKill, getConfig().getInt("killStreakTimer"), _threatLevel));
                     }
                     if (_threatLevel < 0) 
                         _threatLevel = 0;
@@ -132,7 +132,7 @@ public final class UVSummoner extends JavaPlugin implements Listener {
 
     private void trySpawningWave(Location location) {
         Double riftChance = getConfig().getDouble("riftChance") + _threatLevel * getConfig().getDouble("riftChanceIncrease");
-        if (_randomizer.nextInt(100) >= riftChance) {
+        if (_randomizer.nextInt(100) <= riftChance) {
             //Wave wave = getBestPossibleWave(_threatLevel);
             List<Wave> waves = getPossibleWaves(_threatLevel);
             if (waves.size() <= 0) return;
