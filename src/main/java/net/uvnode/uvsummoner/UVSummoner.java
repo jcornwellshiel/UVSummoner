@@ -30,6 +30,7 @@ public final class UVSummoner extends JavaPlugin implements Listener {
     List<Wave> _waves;
     Random _randomizer;
     Map<String, Integer> _playerKills;
+    Map<Integer, String> _announcements;
     long _lastKill;
     int _totalKills,
         _threatLevel;
@@ -43,18 +44,24 @@ public final class UVSummoner extends JavaPlugin implements Listener {
         _randomizer = new Random();
         _waves = new ArrayList<>();
         _playerKills = new HashMap<>();
+        _announcements = new HashMap<>();
         _lastKill = 0;
         _totalKills = 0;
         _threatLevel = 0;
+        
         Map<String, Object> waveConfigList = getConfig().getConfigurationSection("waves").getValues(false);
         for (Map.Entry<String, Object> waveConfig : waveConfigList.entrySet()) {
             ConfigurationSection waveConfigSection = (ConfigurationSection) waveConfig.getValue();
-            _waves.add(new Wave(
+            if (waveConfigSection.getBoolean("isSummon") == true) {
+              _waves.add(new Wave(
                     waveConfigSection.getString("announcement"),
                     waveConfigSection.getInt("killStreakThreshold"),
                     waveConfigSection.getInt("minMobs"),
                     waveConfigSection.getInt("maxMobs"),
                     waveConfigSection.getStringList("possibleMobs")));
+            } else {
+              _announcements.put(waveConfigSection.getInt("killStreakThreshold"), waveConfigSection.getString("announcement"));
+            }
         }
     }
 
@@ -117,10 +124,10 @@ public final class UVSummoner extends JavaPlugin implements Listener {
                     _totalKills++;
                     _threatLevel++;
 
-                    if (_totalKills == getConfig().getInt("minKillStreak")) {
-                        announceNearby(event.getEntity().getLocation(), getConfig().getString("killStreakStartedAnnouncement"));
+                    if (_announcements.containsKey(_threatLevel)) {
+                      announceNearby(event.getEntity().getLocation(), _announcements.get(_threatLevel));
                     }
-
+                    
                     trySpawningWave(event.getEntity().getLocation());
 
                     break;
@@ -149,8 +156,8 @@ public final class UVSummoner extends JavaPlugin implements Listener {
                 }
                 if (wave.getMobs().size() > 0) {
                     for (int i = 0; i < numSpawns; i++) {
-                        int xOffset = _randomizer.nextInt(16) - 8;
-                        int zOffset = _randomizer.nextInt(16) - 8;
+                        int xOffset = _randomizer.nextInt(24) - 12;
+                        int zOffset = _randomizer.nextInt(24) - 12;
                         Location spawnLocation = location.clone();
                         spawnLocation.add(xOffset, 0, zOffset);
                         if (!spawnLocation.getBlock().isEmpty()) {

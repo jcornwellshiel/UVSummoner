@@ -10,43 +10,69 @@ killStreakStartedAnnouncement: You can feel the oppressive anger of Herobrine bu
 killStreakEndedAnnouncement: Herobrine's presence fades.
 playerDeathAnnouncement: Herobrine chuckles, his rage subsides slightly after witnessing PLAYER's demise.
 
+    
 waves:
-  1:
+  -
+    killStreakThreshold: 18
+    announcement: You hear a crackling in the air that sets your hairs on end...
+    isSummon: false
+  -
     killStreakThreshold: 20
     announcement: A rift has opened! You hear maniacal laughter from the other side..
+    isSummon: true
     possibleMobs:
       - Zombie
       - Skeleton
       - Spider
       - CaveSpider
     minMobs: 5
-    maxMobs: 20
-  2:
+    maxMobs: 10
+  -
+    killStreakThreshold: 28
+    announcement: Herobrine's rage grows as you slay his minions... beware his wrath lest he summon more!
+    isSummon: false
+  -
     killStreakThreshold: 30
     announcement: Tssssss...
+    isSummon: true
     possibleMobs:
       - Creeper
     minMobs: 5
-    maxMobs: 20
-  3:
+    maxMobs: 10
+  -
+    killStreakThreshold: 38
+    announcement: You dare fight on against his minions?! You will suffer!
+    isSummon: false
+  -
     killStreakThreshold: 40
     announcement: Herobrine summons hideous monsters from the depths!
+    isSummon: true
     possibleMobs:
       - WitherSkeleton
       - PigZombie
       - Blaze
     minMobs: 5
-    maxMobs: 20
-  4:
-    killStreakThreshold: 50
+    maxMobs: 10
+  -
+    killStreakThreshold: 55
+    announcement: The air grows dense. What will Herobrine send next to plague you?
+    isSummon: false
+  -
+    killStreakThreshold: 60
     announcement: The sound of crones cackling approaches...
+    isSummon: true
     possibleMobs:
       - Witch
     minMobs: 2
-    maxMobs: 12
-  5:
+    maxMobs: 6
+  -
+    killStreakThreshold: 95
+    announcement: YOUR END IS NEAR.
+    isSummon: false
+  -
     killStreakThreshold: 100
     announcement: DOOM IS UPON YOU!
+    isSummon: true
     possibleMobs:
       - Wither
     minMobs: 1
