@@ -1,5 +1,5 @@
 riftChance: 0.00
-riftChanceIncrease: 0.005
+riftChanceIncrease: 0.25
 minimumKillsStreak: 20
 killStreakTimer: 8000
 minY: 50
@@ -12,38 +12,48 @@ playerDeathAnnouncement: Herobrine chuckles, his rage subsides slightly after wi
 
     
 waves:
-  -
+  normalwarning:
     killStreakThreshold: 18
     announcement: You hear a crackling in the air that sets your hairs on end...
     isSummon: false
-  -
+  normal:
     killStreakThreshold: 20
     announcement: A rift has opened! You hear maniacal laughter from the other side..
     isSummon: true
     possibleMobs:
-      - Zombie
-      - Skeleton
       - Spider
       - CaveSpider
     minMobs: 5
     maxMobs: 10
-  -
+    cooldown: 5
+  spiders:
+    killStreakThreshold: 25
+    announcement: The skittering of hundreds of legs...
+    isSummon: true
+    possibleMobs:
+      - Spider
+      - CaveSpider
+    minMobs: 5
+    maxMobs: 12
+    cooldown: 5
+  creeperwarning:
     killStreakThreshold: 28
-    announcement: Herobrine's rage grows as you slay his minions... beware his wrath lest he summon more!
+    announcement: Herobrine's rage grows as you slay his minions... beware his wrath lest they explode!
     isSummon: false
-  -
+  creepers:
     killStreakThreshold: 30
     announcement: Tssssss...
     isSummon: true
     possibleMobs:
       - Creeper
-    minMobs: 5
+    minMobs: 2
     maxMobs: 10
-  -
+    cooldown: 15
+  netherwarning:
     killStreakThreshold: 38
     announcement: You dare fight on against his minions?! You will suffer!
     isSummon: false
-  -
+  nether:
     killStreakThreshold: 40
     announcement: Herobrine summons hideous monsters from the depths!
     isSummon: true
@@ -51,25 +61,27 @@ waves:
       - WitherSkeleton
       - PigZombie
       - Blaze
-    minMobs: 5
+    minMobs: 2
     maxMobs: 10
-  -
+    cooldown: 10
+  cronewarning:
     killStreakThreshold: 55
     announcement: The air grows dense. What will Herobrine send next to plague you?
     isSummon: false
-  -
+  crones:
     killStreakThreshold: 60
     announcement: The sound of crones cackling approaches...
     isSummon: true
     possibleMobs:
       - Witch
-    minMobs: 2
+    minMobs: 1
     maxMobs: 6
-  -
+    cooldown: 10
+  bosswarning:
     killStreakThreshold: 95
     announcement: YOUR END IS NEAR.
     isSummon: false
-  -
+  bosses:
     killStreakThreshold: 100
     announcement: DOOM IS UPON YOU!
     isSummon: true
@@ -77,3 +89,4 @@ waves:
       - Wither
     minMobs: 1
     maxMobs: 1
+    cooldown: 600

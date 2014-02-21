@@ -50,6 +50,7 @@ public final class UVSummoner extends JavaPlugin implements Listener {
         _threatLevel = 0;
         
         Map<String, Object> waveConfigList = getConfig().getConfigurationSection("waves").getValues(false);
+        
         for (Map.Entry<String, Object> waveConfig : waveConfigList.entrySet()) {
             ConfigurationSection waveConfigSection = (ConfigurationSection) waveConfig.getValue();
             if (waveConfigSection.getBoolean("isSummon") == true) {
@@ -58,7 +59,9 @@ public final class UVSummoner extends JavaPlugin implements Listener {
                     waveConfigSection.getInt("killStreakThreshold"),
                     waveConfigSection.getInt("minMobs"),
                     waveConfigSection.getInt("maxMobs"),
-                    waveConfigSection.getStringList("possibleMobs")));
+                    waveConfigSection.getStringList("possibleMobs"),
+                    waveConfigSection.getInt("cooldown")
+              ));
             } else {
               _announcements.put(waveConfigSection.getInt("killStreakThreshold"), waveConfigSection.getString("announcement"));
             }
@@ -139,12 +142,16 @@ public final class UVSummoner extends JavaPlugin implements Listener {
 
     private void trySpawningWave(Location location) {
         Double riftChance = getConfig().getDouble("riftChance") + _threatLevel * getConfig().getDouble("riftChanceIncrease");
-        if (_randomizer.nextInt(100) <= riftChance) {
+        int roll = _randomizer.nextInt(100);
+        getLogger().info("Trying to spawn: Rolled " + roll + " vs " + riftChance.intValue());
+        if (roll <= riftChance) {
             //Wave wave = getBestPossibleWave(_threatLevel);
             List<Wave> waves = getPossibleWaves(_threatLevel);
+            getLogger().info("Picking from "+ waves.size() + " possible waves...");
             if (waves.size() <= 0) return;
             Wave wave = waves.get(_randomizer.nextInt(waves.size()));
             if (wave != null) {
+              wave.markSpawned(System.currentTimeMillis());
                 getLogger().info(wave.getAnnouncement());
                 location.getWorld().strikeLightningEffect(location);
                 announceNearby(location, wave.getAnnouncement());
@@ -243,7 +250,7 @@ public final class UVSummoner extends JavaPlugin implements Listener {
     private Wave getBestPossibleWave(Integer killCount) {
         Wave bestPossibleWave = null;
         for (Wave wave : _waves) {
-            if (killCount > wave.getKillStreakThreshold()) {
+            if (killCount > wave.getKillStreakThreshold() && wave.isOffCooldown(System.currentTimeMillis())) {
                 if (bestPossibleWave == null
                         || wave.getKillStreakThreshold() > bestPossibleWave.getKillStreakThreshold()) {
                     bestPossibleWave = wave;

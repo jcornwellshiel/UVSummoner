@@ -18,14 +18,17 @@ public class Wave {
     private int _maxMobs;
     private int _minMobs;
     private int _threatThreshold;
-
+    private int _cooldown;
+    private long _lastSpawn;
+    
     private List<String> _mobs;
-    Wave(String announcement, int killStreakThreshold, int minMobs, int maxMobs, List<String> mobList) {
+    Wave(String announcement, int killStreakThreshold, int minMobs, int maxMobs, List<String> mobList, int cooldown) {
         _announcement = announcement;
         _threatThreshold = killStreakThreshold;
         _minMobs = minMobs;
         _maxMobs = maxMobs;
         _mobs = mobList;
+        _cooldown = cooldown * 1000;
     }
 
     public String getAnnouncement() {
@@ -52,6 +55,16 @@ public class Wave {
             return _mobs.size();
         else
             return 0;
+    }
+    public boolean isOffCooldown(long currentTime) {
+      if (currentTime >= _lastSpawn + _cooldown) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    public void markSpawned(long time) {
+      _lastSpawn = time;
     }
     
 }
